@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cinema Webservice</string>
+    <string name="action_settings">Réglages</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="films">Films</string>
+    <string name="actors">Acteurs</string>
+    <string name="categories">Catégories</string>
+    <string name="characters">Personnages</string>
+    <string name="directors">Réalisateurs</string>
+</resources>

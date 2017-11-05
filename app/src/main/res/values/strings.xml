@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="films">Movies</string>
+    <string name="actors">Actors</string>
+    <string name="categories">Categories</string>
+    <string name="characters">Characters</string>
+    <string name="directors">Directors</string>
 </resources>
