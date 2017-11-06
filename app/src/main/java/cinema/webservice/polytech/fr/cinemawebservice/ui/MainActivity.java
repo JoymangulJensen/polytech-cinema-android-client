@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onListFragmentInteraction(Film film) {
         FilmFragment filmFragment = FilmFragment.newInstance(film);
-        newInstance
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, filmFragment);
         fragmentTransaction.addToBackStack(null);
