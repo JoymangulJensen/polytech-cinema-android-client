@@ -20,7 +20,7 @@ import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FilmsFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FilmsFragment.OnListFragmentInteractionListener{
 
     private FragmentManager fragmentManager;
 
@@ -125,6 +125,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Film film) {
+        FilmFragment filmFragment = FilmFragment.newInstance(film);
+        newInstance
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, filmFragment);
+        fragmentTransaction.addToBackStack(null);
 
+        // Commit the transaction
+        fragmentTransaction.commit();
     }
+
 }
