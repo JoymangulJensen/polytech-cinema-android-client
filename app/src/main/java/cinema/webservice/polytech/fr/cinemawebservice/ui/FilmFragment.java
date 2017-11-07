@@ -3,9 +3,7 @@ package cinema.webservice.polytech.fr.cinemawebservice.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
@@ -22,6 +20,8 @@ public class FilmFragment extends Fragment {
     protected static final String ARG_FILM = "ui.filmfraqgment";
 
     private Film film;
+
+    private OnFragmentInteractionListener mListener;
 
     public FilmFragment() {
         // Required empty public constructor
@@ -48,7 +48,6 @@ public class FilmFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             film = getArguments().getParcelable(ARG_FILM);
-
         }
     }
 
@@ -59,17 +58,66 @@ public class FilmFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
         TextView tv = (TextView) view.findViewById(R.id.tv_film_title);
         tv.setText(film.getTitle());
+
+        //*ell the fragment that it has menu options in order to callonCreateOptionsMenu
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onEditButtonPressed(Film film) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(film);
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        MenuItem item = menu.getItem(0);
+        item.setVisible(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            onEditButtonPressed(film);
+            return true;
+        }
+
+        return false;
+    }
+
+        /**
+         * This interface must be implemented by activities that contain this
+         * fragment to allow an interaction in this fragment to be communicated
+         * to the activity and potentially other fragments contained in that
+         * activity.
+         * <p>
+         * See the Android Training lesson <a href=
+         * "http://developer.android.com/training/basics/fragments/communicating.html"
+         * >Communicating with Other Fragments</a> for more information.
+         */
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Film film);
+    }
 }

@@ -20,7 +20,7 @@ import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FilmsFragment.OnListFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, FilmsFragment.OnListFragmentInteractionListener, FilmFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
 
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Add Fab button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,19 +52,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Add the films list fragment
-        // Create an instance of FilmsFragment
-        FilmsFragment fragment = new FilmsFragment();
-
-        // In case this activity was started with special instructions from an Intent,
-        // pass the Intent's extras to the fragment as arguments
-        fragment.setArguments(getIntent().getExtras());
-
-        // Add the fragment to the 'fragment_container' FrameLayout
-        fragmentManager = getSupportFragmentManager();
-
-        FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+        createFilmsFragment(true);
 
 
     }
@@ -81,8 +70,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return false;
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.getItem(0);
+        item.setVisible(false);
+        return true;
     }
 
     @Override
@@ -94,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -108,6 +99,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_film) {
             // Handle the camera action
+            createFilmsFragment(false);
         } else if (id == R.id.nav_actor) {
 
         } else if (id == R.id.nav_character) {
@@ -123,6 +115,28 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void createFilmsFragment(Boolean isNew) {
+        // Add the films list fragment
+        // Create an instance of FilmsFragment
+        FilmsFragment fragment = new FilmsFragment();
+
+        // In case this activity was started with special instructions from an Intent,
+        // pass the Intent's extras to the fragment as arguments
+        fragment.setArguments(getIntent().getExtras());
+
+        // Add the fragment to the 'fragment_container' FrameLayout
+        fragmentManager = getSupportFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (isNew) {
+            fragmentTransaction.add(R.id.fragment_container, fragment);
+        } else {
+            fragmentTransaction.replace(R.id.fragment_container, fragment);
+            fragmentTransaction.addToBackStack(null);
+        }
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onListFragmentInteraction(Film film) {
         FilmFragment filmFragment = FilmFragment.newInstance(film);
@@ -135,4 +149,16 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onFragmentInteraction(Film film) {
+        Log.d("eeeeee", film.getTitle());
+        AddEditFilmFragment addEditFilmFragment = AddEditFilmFragment.newInstance(film);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, addEditFilmFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
+    }
 }
