@@ -31,16 +31,25 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Add Fab button
+        // Get Fab button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("view type", view.toString());
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AddEditFilmFragment addEditFilmFragment = AddEditFilmFragment.newInstance(null);
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, addEditFilmFragment);
+                fragmentTransaction.addToBackStack(null);
+
+                // Commit the transaction
+                fragmentTransaction.commit();
             }
         });
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -118,11 +127,7 @@ public class MainActivity extends AppCompatActivity
     public void createFilmsFragment(Boolean isNew) {
         // Add the films list fragment
         // Create an instance of FilmsFragment
-        FilmsFragment fragment = new FilmsFragment();
-
-        // In case this activity was started with special instructions from an Intent,
-        // pass the Intent's extras to the fragment as arguments
-        fragment.setArguments(getIntent().getExtras());
+        FilmsFragment fragment = FilmsFragment.newInstance();
 
         // Add the fragment to the 'fragment_container' FrameLayout
         fragmentManager = getSupportFragmentManager();
@@ -148,6 +153,7 @@ public class MainActivity extends AppCompatActivity
         // Commit the transaction
         fragmentTransaction.commit();
     }
+
 
     @Override
     public void onFragmentInteraction(Film film) {

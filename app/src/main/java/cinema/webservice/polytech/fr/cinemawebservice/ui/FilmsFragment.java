@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,13 @@ public class FilmsFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public FilmsFragment() {
+    }
+
+
+    public static FilmsFragment newInstance() {
+        FilmsFragment fragment = new FilmsFragment();
+        //Bundle args = new Bundle();
+        return fragment;
     }
 
     @Override

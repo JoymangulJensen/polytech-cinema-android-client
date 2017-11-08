@@ -57,7 +57,8 @@ public class FilmFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_film, container, false);
         TextView tv = (TextView) view.findViewById(R.id.tv_film_title);
-        tv.setText(film.getTitle());
+        if(film !=null)
+            tv.setText(film.getTitle());
 
         //*ell the fragment that it has menu options in order to callonCreateOptionsMenu
         setHasOptionsMenu(true);
