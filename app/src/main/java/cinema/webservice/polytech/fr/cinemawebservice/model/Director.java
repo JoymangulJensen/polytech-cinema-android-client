@@ -76,4 +76,9 @@ public class Director implements Parcelable {
             return new Director[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return name + ' ' + firstName;
+    }
 }

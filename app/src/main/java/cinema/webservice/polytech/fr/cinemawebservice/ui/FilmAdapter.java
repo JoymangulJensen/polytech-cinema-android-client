@@ -35,8 +35,8 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.film = films.get(position);
-        holder.mIdView.setText(films.get(position).getTitle());
-        holder.mContentView.setText(String.valueOf(films.get(position).getId()));
+        holder.mIdView.setText(String.valueOf(films.get(position).getId()));
+        holder.mContentView.setText(String.valueOf(films.get(position).getTitle()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

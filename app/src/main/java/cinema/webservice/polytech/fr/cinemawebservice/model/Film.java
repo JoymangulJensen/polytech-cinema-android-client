@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -82,6 +84,11 @@ public class Film implements Parcelable {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getReleaseDateStr() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        return df.format(this.getReleaseDate());
     }
 
     public String getTitle() {

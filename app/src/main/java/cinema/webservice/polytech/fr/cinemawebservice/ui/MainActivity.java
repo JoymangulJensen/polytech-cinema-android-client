@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Film film) {
-        Log.d("eeeeee", film.getTitle());
         AddEditFilmFragment addEditFilmFragment = AddEditFilmFragment.newInstance(film);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

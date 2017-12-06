@@ -11,9 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
+import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +26,14 @@ import java.util.List;
 public class FilmsFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    private FilmController filmController;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public FilmsFragment() {
+        filmController = CinemaClient.getClient().create(FilmController.class);
     }
 
     @Override
@@ -44,9 +50,24 @@ public class FilmsFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new FilmAdapter(this.createFilms(), mListener));
+            //recyclerView.setAdapter(new FilmAdapter(this.createFilms(), mListener));
+
+            Call<List<Film>> call = filmController.getFilms();
+            call.enqueue(new Callback<List<Film>>() {
+                @Override
+                public void onResponse(Call<List<Film>> call, Response<List<Film>> response) {
+                    recyclerView.setAdapter(new FilmAdapter( response.body(), mListener));
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    call.cancel();
+                }
+            });
+
+
         }
         return view;
     }
@@ -69,20 +90,6 @@ public class FilmsFragment extends Fragment {
         mListener = null;
     }
 
-    private List<Film> createFilms() {
-        List<Film> films = new ArrayList<>();
-        Film f1 = new Film();
-        f1.setId(1);
-        f1.setTitle("title 1");
-
-        Film f2 = new Film();
-        f2.setId(2);
-        f2.setTitle("Title 2");
-
-        films.add(f1);
-        films.add(f2);
-        return films;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
