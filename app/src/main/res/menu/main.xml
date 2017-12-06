@@ -6,4 +6,14 @@
           android:icon="@drawable/ic_edit"
           android:orderInCategory="0"
           app:showAsAction="always"/>
+    <item android:id="@+id/action_add"
+          android:title="@string/edit"
+          android:icon="@drawable/ic_add"
+          android:orderInCategory="2"
+          app:showAsAction="always"/>
+    <item android:id="@+id/action_close"
+          android:title="@string/edit"
+          android:icon="@drawable/ic_close"
+          android:orderInCategory="1"
+          app:showAsAction="always"/>
 </menu>

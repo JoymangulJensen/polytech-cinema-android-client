@@ -18,4 +18,5 @@
     <string name="lastName">Nom</string>
     <string name="firstName">Prénom</string>
     <string name="category">Categorie</string>
+    <string name="title">Titre</string>
 </resources>
