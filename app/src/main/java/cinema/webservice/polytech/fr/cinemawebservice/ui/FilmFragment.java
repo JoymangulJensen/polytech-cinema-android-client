@@ -73,6 +73,9 @@ public class FilmFragment extends Fragment {
         TextView tv7 = (TextView) view.findViewById(R.id.tv_category);
         if(film.getCategory() != null)
             tv7.setText(film.getCategory().getName());
+        if(film !=null)
+            tv.setText(film.getTitle());
+
         //*ell the fragment that it has menu options in order to callonCreateOptionsMenu
         setHasOptionsMenu(true);
         return view;

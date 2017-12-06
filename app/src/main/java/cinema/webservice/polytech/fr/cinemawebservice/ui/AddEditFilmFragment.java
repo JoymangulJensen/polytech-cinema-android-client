@@ -56,7 +56,8 @@ public class AddEditFilmFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_edit_film, container, false);
         EditText et = (EditText) view.findViewById(R.id.editText);
-        et.setText(film.getTitle());
+        if(film !=null)
+            et.setText(film.getTitle());
 
         //*ell the fragment that it has menu options in order to callonCreateOptionsMenu
         setHasOptionsMenu(true);
