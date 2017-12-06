@@ -56,25 +56,26 @@ public class FilmFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_film, container, false);
-        TextView tv = (TextView) view.findViewById(R.id.tv_film_title);
-        tv.setText(film.getTitle());
-        TextView tv2 = (TextView) view.findViewById(R.id.tv_budget);
-        tv2.setText(String.valueOf(film.getBudget()));
-        TextView tv3 = (TextView) view.findViewById(R.id.tv_grossing);
-        tv3.setText(String.valueOf(film.getGrossing()));
-        TextView tv4 = (TextView) view.findViewById(R.id.tv_release_date);
-        if(film.getReleaseDate() != null)
-            tv4.setText(film.getReleaseDateStr());
-        TextView tv5 = (TextView) view.findViewById(R.id.tv_duration);
-        tv5.setText(String.valueOf(film.getDuration()));
-        TextView tv6 = (TextView) view.findViewById(R.id.tv_director);
-        if(film.getDirector() != null)
-            tv6.setText(film.getDirector().toString());
-        TextView tv7 = (TextView) view.findViewById(R.id.tv_category);
-        if(film.getCategory() != null)
-            tv7.setText(film.getCategory().getName());
-        if(film !=null)
+        if(film !=null) {
+            TextView tv = (TextView) view.findViewById(R.id.tv_film_title);
             tv.setText(film.getTitle());
+            TextView tv2 = (TextView) view.findViewById(R.id.tv_budget);
+            tv2.setText(String.valueOf(film.getBudget()));
+            TextView tv3 = (TextView) view.findViewById(R.id.tv_grossing);
+            tv3.setText(String.valueOf(film.getGrossing()));
+            TextView tv4 = (TextView) view.findViewById(R.id.tv_release_date);
+            if(film.getReleaseDate() != null)
+                tv4.setText(film.getReleaseDateStr());
+            TextView tv5 = (TextView) view.findViewById(R.id.tv_duration);
+            tv5.setText(String.valueOf(film.getDuration()));
+            TextView tv6 = (TextView) view.findViewById(R.id.tv_director);
+            if(film.getDirector() != null)
+                tv6.setText(film.getDirector().toString());
+            TextView tv7 = (TextView) view.findViewById(R.id.tv_category);
+            if(film.getCategory() != null)
+                tv7.setText(film.getCategory().getName());
+        }
+
 
         //*ell the fragment that it has menu options in order to callonCreateOptionsMenu
         setHasOptionsMenu(true);
