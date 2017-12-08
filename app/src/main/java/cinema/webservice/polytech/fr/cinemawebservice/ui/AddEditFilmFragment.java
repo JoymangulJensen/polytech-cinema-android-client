@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
@@ -83,9 +84,9 @@ public class AddEditFilmFragment extends Fragment {
             EditText tv6 = (EditText) view.findViewById(R.id.tv_director);
             if (film.getDirector() != null)
                 tv6.setText(film.getDirector().toString());
-            EditText tv7 = (EditText) view.findViewById(R.id.tv_category);
-            if (film.getCategory() != null)
-                tv7.setText(film.getCategory().getName());
+            Spinner spinner = (Spinner) view.findViewById(R.id.spinner_category);
+            CategoryAdapter categoryAdapter = new CategoryAdapter(this.getContext(), R.id.spinner_category);
+            spinner.setAdapter(categoryAdapter);
         }
 
         //tell the fragment that it has menu options in order to callonCreateOptionsMenu
@@ -123,7 +124,7 @@ public class AddEditFilmFragment extends Fragment {
                 film.getBudget(),
                 film.getDuration(),
                 film.getGrossing(),
-                "2017-01-01" ,
+                film.getReleaseDateStr(),
                 1,
                 "CO");
         call.enqueue(new Callback<Film>() {
@@ -150,6 +151,9 @@ public class AddEditFilmFragment extends Fragment {
         film.setGrossing(Long.parseLong(et.getText().toString()));
         et = (EditText) view.findViewById(R.id.tv_duration);
         film.setDuration(Long.parseLong(et.getText().toString()));
+        DatePicker dp = (DatePicker) view.findViewById(R.id.datePicker);
+        DateTime dt = new DateTime(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), 0,0);
+        film.setReleaseDate(dt.toDate());
         return film;
     }
 
