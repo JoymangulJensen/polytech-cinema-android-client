@@ -1,4 +1,4 @@
-package cinema.webservice.polytech.fr.cinemawebservice.ui;
+package cinema.webservice.polytech.fr.cinemawebservice.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
     private final List<Film> films;
     private final OnListFragmentInteractionListener mListener;
 
-    FilmAdapter(List<Film> films, OnListFragmentInteractionListener listener) {
+    public FilmAdapter(List<Film> films, OnListFragmentInteractionListener listener) {
         this.films = films;
         mListener = listener;
     }

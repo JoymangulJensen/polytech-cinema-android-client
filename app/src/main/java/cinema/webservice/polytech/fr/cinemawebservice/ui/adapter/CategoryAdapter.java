@@ -1,4 +1,4 @@
-package cinema.webservice.polytech.fr.cinemawebservice.ui;
+package cinema.webservice.polytech.fr.cinemawebservice.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,7 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.CategoryController;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
+import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +28,9 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     private List<Category> items = new ArrayList<>();
     private Context context;
 
-    public CategoryAdapter(Context context, int resouceId) {
+    public CategoryAdapter(Context context, int resouceId, List<Category> list) {
         super(context, resouceId);
-        Log.d("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", String.valueOf(resouceId));
-        Category cat = new Category();
-        cat.setCode("XX");
-        cat.setName("affffff");
-        this.items.add(cat);
-        Category cat2 = new Category();
-        cat2.setCode("XX");
-        cat2.setName("bffffff");
-        this.items.add(cat2);
-        cat.setCode("XX");
-        cat.setName("cffffff");
-        this.items.add(cat);
-        cat.setCode("XX");
-        cat.setName("dffffff");
-        this.items.add(cat);
+        this.items = list;
         this.context = context;
     }
 
@@ -58,7 +51,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         LayoutInflater inflater = LayoutInflater.from(context);
         View  v = inflater.inflate(R.layout.spinner_item, null, false);
         ViewHolder viewHolder = new ViewHolder(v);

@@ -5,10 +5,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by JOYMANGUL Jensen Selwyn
- * on 06-Dec-17.
  */
 public class CinemaClient {
-    private final static  String BASE_URL = "http://192.168.1.50:8080//cinema/api/";
+    private final static  String BASE_URL = "http://192.168.1.28:8080//cinema/api/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

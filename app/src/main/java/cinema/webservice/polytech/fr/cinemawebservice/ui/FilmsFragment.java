@@ -14,6 +14,7 @@ import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.FilmAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

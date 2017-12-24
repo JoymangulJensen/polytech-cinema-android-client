@@ -1,20 +1,30 @@
 package cinema.webservice.polytech.fr.cinemawebservice.ui;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.CategoryController;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.DirectorController;
 import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Director;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.CategoryAdapter;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.DirectionAdapter;
 import org.joda.time.DateTime;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.List;
 
 
 /**
@@ -25,10 +35,12 @@ import retrofit2.Response;
 public class AddEditFilmFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     protected static final String ARG_FILM_EDIT = "ui.filmfraqgment.edit";
-
+    Spinner directorSpinner;
+    private Spinner categorySpinner;
     private Film film;
     private View view;
     private FilmController filmController;
+    private Context context;
 
     public AddEditFilmFragment() {
         // Required empty public constructor
@@ -81,12 +93,56 @@ public class AddEditFilmFragment extends Fragment {
 
             EditText tv5 = (EditText) view.findViewById(R.id.tv_duration);
             tv5.setText(String.valueOf(film.getDuration()));
-            EditText tv6 = (EditText) view.findViewById(R.id.tv_director);
-            if (film.getDirector() != null)
-                tv6.setText(film.getDirector().toString());
-            Spinner spinner = (Spinner) view.findViewById(R.id.spinner_category);
-            CategoryAdapter categoryAdapter = new CategoryAdapter(this.getContext(), R.id.spinner_category);
-            spinner.setAdapter(categoryAdapter);
+
+            directorSpinner = (Spinner) view.findViewById(R.id.spinner_director);
+            DirectorController directorController = CinemaClient.getClient().create(DirectorController.class);
+            Call<List<Director>> callDirector = directorController.getDirector();
+            context = this.getContext();
+            callDirector.enqueue(new Callback<List<Director>>() {
+                @Override
+                public void onResponse(Call<List<Director>> call, Response<List<Director>> response) {
+                    DirectionAdapter directionAdapter = new DirectionAdapter(context, R.id.spinner_director, response.body());
+                    directorSpinner.setAdapter(directionAdapter);
+                    int currentDirector = 0;
+                    for (int i = 0; i < directionAdapter.getCount(); i++) {
+                        if (film.getDirector().getId() == directionAdapter.getItem(i).getId()) {
+                            currentDirector = i;
+                            break;
+                        }
+                    }
+                    directorSpinner.setSelection(currentDirector);
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    call.cancel();
+                }
+            });
+
+            categorySpinner = (Spinner) view.findViewById(R.id.spinner_category);
+            CategoryController categoryController = CinemaClient.getClient().create(CategoryController.class);
+            Call<List<Category>> call = categoryController.getCategory();
+            context = this.getContext();
+            call.enqueue(new Callback<List<Category>>() {
+                @Override
+                public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                    CategoryAdapter categoryAdapter = new CategoryAdapter(context, R.id.spinner_category, response.body());
+                    categorySpinner.setAdapter(categoryAdapter);
+                    int currentCategory = 0;
+                    for (int i = 0; i < categoryAdapter.getCount(); i++) {
+                        if (film.getCategory().getCode().equals(categoryAdapter.getItem(i).getCode())) {
+                            currentCategory = i;
+                            break;
+                        }
+                    }
+                    categorySpinner.setSelection(currentCategory);
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    call.cancel();
+                }
+            });
         }
 
         //tell the fragment that it has menu options in order to callonCreateOptionsMenu
@@ -117,7 +173,7 @@ public class AddEditFilmFragment extends Fragment {
         }
     }
 
-    public void onEditButtonPressed() {
+    private void onEditButtonPressed() {
         Film film = getUpdatedFilm();
         Call<Film> call = filmController.updateFilm(film.getId(),
                 film.getTitle(),
@@ -125,8 +181,8 @@ public class AddEditFilmFragment extends Fragment {
                 film.getDuration(),
                 film.getGrossing(),
                 film.getReleaseDateStr(),
-                1,
-                "CO");
+                film.getDirector().getId(),
+                film.getCategory().getCode());
         call.enqueue(new Callback<Film>() {
             @Override
             public void onResponse(Call<Film> call, Response<Film> response) {
@@ -140,7 +196,7 @@ public class AddEditFilmFragment extends Fragment {
         });
     }
 
-    public Film getUpdatedFilm() {
+    private Film getUpdatedFilm() {
         Film film = new Film();
         film.setId(this.film.getId());
         EditText et = (EditText) view.findViewById(R.id.tv_title);
@@ -152,8 +208,12 @@ public class AddEditFilmFragment extends Fragment {
         et = (EditText) view.findViewById(R.id.tv_duration);
         film.setDuration(Long.parseLong(et.getText().toString()));
         DatePicker dp = (DatePicker) view.findViewById(R.id.datePicker);
-        DateTime dt = new DateTime(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), 0,0);
+        DateTime dt = new DateTime(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), 0, 0);
         film.setReleaseDate(dt.toDate());
+        Category selectedCategory = (Category) categorySpinner.getSelectedItem();
+        film.setCategory(selectedCategory);
+        Director selectecDirector = (Director) directorSpinner.getSelectedItem();
+        film.setDirector(selectecDirector);
         return film;
     }
 
