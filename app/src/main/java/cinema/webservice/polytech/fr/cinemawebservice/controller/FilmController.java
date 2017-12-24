@@ -15,6 +15,17 @@ public interface FilmController {
     Call<List<Film>> getFilms();
 
     @FormUrlEncoded
+    @POST("film")
+    Call<Film> addFilm(
+                          @Field("title") String title,
+                          @Field("budget") long budget,
+                          @Field("duration") long duration,
+                          @Field("grossing") long grossing,
+                          @Field("releaseDate") String releaseDate,
+                          @Field("director") long director,
+                          @Field("category") String category);
+
+    @FormUrlEncoded
     @PUT("film/{id}")
     Call<Film> updateFilm(@Path("id") long id,
                           @Field("title") String title,
@@ -24,4 +35,7 @@ public interface FilmController {
                           @Field("releaseDate") String releaseDate,
                           @Field("director") long director,
                           @Field("category") String category);
+
+    @DELETE("film/{id}")
+    Call<Void> deleteFilm(@Path("id") long id);
 }

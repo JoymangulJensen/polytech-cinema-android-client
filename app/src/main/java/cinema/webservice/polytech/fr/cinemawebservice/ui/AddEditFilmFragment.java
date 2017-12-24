@@ -2,8 +2,10 @@ package cinema.webservice.polytech.fr.cinemawebservice.ui;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,13 +39,19 @@ public class AddEditFilmFragment extends Fragment {
     Spinner directorSpinner;
     private Spinner categorySpinner;
     private Film film;
+    private boolean isNewFilm = true;
     private View view;
     private FilmController filmController;
     private Context context;
+    private FilmsFragment.OnListFragmentInteractionListener mListener;
+    private OnReturnToFilmsListener returntoFilmsListener;
+
 
     public AddEditFilmFragment() {
         // Required empty public constructor
         filmController = CinemaClient.getClient().create(FilmController.class);
+        if(film != null)
+            isNewFilm = false;
     }
 
     /**
@@ -70,6 +78,25 @@ public class AddEditFilmFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FilmsFragment.OnListFragmentInteractionListener) {
+            mListener = (FilmsFragment.OnListFragmentInteractionListener) context;
+            returntoFilmsListener = (OnReturnToFilmsListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+        returntoFilmsListener = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -92,57 +119,10 @@ public class AddEditFilmFragment extends Fragment {
 
             EditText tv5 = (EditText) view.findViewById(R.id.tv_duration);
             tv5.setText(String.valueOf(film.getDuration()));
-
-            directorSpinner = (Spinner) view.findViewById(R.id.spinner_director);
-            DirectorController directorController = CinemaClient.getClient().create(DirectorController.class);
-            Call<List<Director>> callDirector = directorController.getDirector();
-            context = this.getContext();
-            callDirector.enqueue(new Callback<List<Director>>() {
-                @Override
-                public void onResponse(Call<List<Director>> call, Response<List<Director>> response) {
-                    DirectionAdapter directionAdapter = new DirectionAdapter(context, R.id.spinner_director, response.body());
-                    directorSpinner.setAdapter(directionAdapter);
-                    int currentDirector = 0;
-                    for (int i = 0; i < directionAdapter.getCount(); i++) {
-                        if (film.getDirector().getId() == directionAdapter.getItem(i).getId()) {
-                            currentDirector = i;
-                            break;
-                        }
-                    }
-                    directorSpinner.setSelection(currentDirector);
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    call.cancel();
-                }
-            });
-
-            categorySpinner = (Spinner) view.findViewById(R.id.spinner_category);
-            CategoryController categoryController = CinemaClient.getClient().create(CategoryController.class);
-            Call<List<Category>> call = categoryController.getCategory();
-            context = this.getContext();
-            call.enqueue(new Callback<List<Category>>() {
-                @Override
-                public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                    CategoryAdapter categoryAdapter = new CategoryAdapter(context, R.id.spinner_category, response.body());
-                    categorySpinner.setAdapter(categoryAdapter);
-                    int currentCategory = 0;
-                    for (int i = 0; i < categoryAdapter.getCount(); i++) {
-                        if (film.getCategory().getCode().equals(categoryAdapter.getItem(i).getCode())) {
-                            currentCategory = i;
-                            break;
-                        }
-                    }
-                    categorySpinner.setSelection(currentCategory);
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    call.cancel();
-                }
-            });
         }
+        getDirector();
+        getCategory();
+
 
         //tell the fragment that it has menu options in order to callonCreateOptionsMenu
         setHasOptionsMenu(true);
@@ -152,7 +132,8 @@ public class AddEditFilmFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Do something that differs the Activity's menu here
-        menu.getItem(1).setVisible(true);
+        if(film != null)
+            menu.getItem(1).setVisible(true);
         menu.getItem(2).setVisible(true);
     }
 
@@ -162,10 +143,13 @@ public class AddEditFilmFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_add:
-                onEditButtonPressed();
+                if(isNewFilm)
+                    onAddButtonPressed();
+                else
+                    onEditButtonPressed();
                 return true;
             case R.id.action_close:
-                onEditButtonPressed();
+                deleteFilm();
                 return true;
             default:
                 return false;
@@ -182,10 +166,11 @@ public class AddEditFilmFragment extends Fragment {
                 film.getReleaseDateStr(),
                 film.getDirector().getId(),
                 film.getCategory().getCode());
+
         call.enqueue(new Callback<Film>() {
             @Override
             public void onResponse(Call<Film> call, Response<Film> response) {
-
+                mListener.onListFragmentInteraction(response.body());
             }
 
             @Override
@@ -195,9 +180,35 @@ public class AddEditFilmFragment extends Fragment {
         });
     }
 
+    private void onAddButtonPressed() {
+        Film film = getUpdatedFilm();
+        Call<Film> call = filmController.addFilm(
+                film.getTitle(),
+                film.getBudget(),
+                film.getDuration(),
+                film.getGrossing(),
+                film.getReleaseDateStr(),
+                film.getDirector().getId(),
+                film.getCategory().getCode());
+
+        call.enqueue(new Callback<Film>() {
+            @Override
+            public void onResponse(Call<Film> call, Response<Film> response) {
+                mListener.onListFragmentInteraction(response.body());
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+
     private Film getUpdatedFilm() {
         Film film = new Film();
-        film.setId(this.film.getId());
+        if(this.film != null)
+            film.setId(this.film.getId());
         EditText et = (EditText) view.findViewById(R.id.tv_title);
         film.setTitle(et.getText().toString());
         et = (EditText) view.findViewById(R.id.tv_budget);
@@ -211,10 +222,87 @@ public class AddEditFilmFragment extends Fragment {
         film.setReleaseDate(dt.toDate());
         Category selectedCategory = (Category) categorySpinner.getSelectedItem();
         film.setCategory(selectedCategory);
-        Director selectecDirector = (Director) directorSpinner.getSelectedItem();
-        film.setDirector(selectecDirector);
+        Director selectedDirector = (Director) directorSpinner.getSelectedItem();
+        film.setDirector(selectedDirector);
         return film;
     }
 
+    private void deleteFilm() {
+        Call<Void> callDirector = filmController.deleteFilm(film.getId());
+        context = this.getContext();
+        callDirector.enqueue(new Callback<Void>() {
 
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                returntoFilmsListener.OnReturnToFilms();
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void getCategory() {
+        categorySpinner = (Spinner) view.findViewById(R.id.spinner_category);
+        CategoryController categoryController = CinemaClient.getClient().create(CategoryController.class);
+        Call<List<Category>> call = categoryController.getCategory();
+        context = this.getContext();
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                CategoryAdapter categoryAdapter = new CategoryAdapter(context, R.id.spinner_category, response.body());
+                categorySpinner.setAdapter(categoryAdapter);
+                int currentCategory = 0;
+                if(!isNewFilm) {
+                    for (int i = 0; i < categoryAdapter.getCount(); i++) {
+                        if (film.getCategory().getCode().equals(categoryAdapter.getItem(i).getCode())) {
+                            currentCategory = i;
+                            break;
+                        }
+                    }
+                }
+
+                categorySpinner.setSelection(currentCategory);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+    private void getDirector() {
+        directorSpinner = (Spinner) view.findViewById(R.id.spinner_director);
+        DirectorController directorController = CinemaClient.getClient().create(DirectorController.class);
+        Call<List<Director>> callDirector = directorController.getDirector();
+        context = this.getContext();
+        callDirector.enqueue(new Callback<List<Director>>() {
+            @Override
+            public void onResponse(Call<List<Director>> call, Response<List<Director>> response) {
+                DirectionAdapter directionAdapter = new DirectionAdapter(context, R.id.spinner_director, response.body());
+                directorSpinner.setAdapter(directionAdapter);
+                int currentDirector = 0;
+                if(!isNewFilm) {
+                    for (int i = 0; i < directionAdapter.getCount(); i++) {
+                        if (film.getDirector().getId() == directionAdapter.getItem(i).getId()) {
+                            currentDirector = i;
+                            break;
+                        }
+                    }
+                }
+                directorSpinner.setSelection(currentDirector);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    public interface OnReturnToFilmsListener {
+        void OnReturnToFilms();
+    }
 }

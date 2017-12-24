@@ -13,7 +13,7 @@
           app:showAsAction="always"/>
     <item android:id="@+id/action_close"
           android:title="@string/edit"
-          android:icon="@drawable/ic_close"
+          android:icon="@drawable/ic_delete"
           android:orderInCategory="1"
           app:showAsAction="always"/>
 </menu>

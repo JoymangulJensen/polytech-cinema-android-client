@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,13 @@ import cinema.webservice.polytech.fr.cinemawebservice.R;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FilmsFragment.OnListFragmentInteractionListener, FilmFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        FilmsFragment.OnListFragmentInteractionListener,
+        FilmFragment.OnFragmentInteractionListener,
+        AddEditFilmFragment.OnReturnToFilmsListener {
 
     private FragmentManager fragmentManager;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +34,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Get Fab button
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("view type", view.toString());
-                AddEditFilmFragment addEditFilmFragment = AddEditFilmFragment.newInstance(null);
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, addEditFilmFragment);
-                fragmentTransaction.addToBackStack(null);
-
-                // Commit the transaction
-                fragmentTransaction.commit();
-            }
-        });
-
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -138,6 +126,21 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.addToBackStack(null);
         }
+        fab.show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddEditFilmFragment addEditFilmFragment = AddEditFilmFragment.newInstance(null);
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, addEditFilmFragment);
+                fragmentTransaction.addToBackStack(null);
+                fab.hide();
+                // Commit the transaction
+                fragmentTransaction.commit();
+            }
+        });
+
         fragmentTransaction.commit();
     }
 
@@ -161,10 +164,14 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, addEditFilmFragment);
         fragmentTransaction.addToBackStack(null);
-
+        fab.hide();
         // Commit the transaction
         fragmentTransaction.commit();
     }
 
 
+    @Override
+    public void OnReturnToFilms() {
+        createFilmsFragment(false);
+    }
 }
