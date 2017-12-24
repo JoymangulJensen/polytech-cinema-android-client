@@ -11,10 +11,6 @@
                 android:icon="@drawable/ic_actor"
                 android:title="@string/actors"/>
         <item
-                android:id="@+id/nav_character"
-                android:icon="@drawable/ic_character"
-                android:title="@string/characters"/>
-        <item
                 android:id="@+id/nav_category"
                 android:icon="@drawable/ic_category"
                 android:title="@string/categories"/>

@@ -70,7 +70,7 @@ public class FilmFragment extends Fragment {
             tv5.setText(String.valueOf(film.getDuration()));
             TextView tv6 = (TextView) view.findViewById(R.id.tv_director);
             if (film.getDirector() != null)
-                tv6.setText(film.getDirector().toString());
+                tv6.setText(film.getDirector().getFullName());
             TextView tv7 = (TextView) view.findViewById(R.id.tv_category);
             if (film.getCategory() != null)
                 tv7.setText(film.getCategory().getName());
@@ -96,7 +96,7 @@ public class FilmFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSelectActor");
         }
     }
 

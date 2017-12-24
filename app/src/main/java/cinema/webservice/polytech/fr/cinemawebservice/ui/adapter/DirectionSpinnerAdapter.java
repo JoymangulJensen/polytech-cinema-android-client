@@ -19,11 +19,11 @@ import java.util.List;
  * Date: 24-Dec-17
  * Time: 10:29
  */
-public class DirectionAdapter extends ArrayAdapter<Director> {
+public class DirectionSpinnerAdapter extends ArrayAdapter<Director> {
     private List<Director> items = new ArrayList<>();
     private Context context;
 
-    public DirectionAdapter(Context context, int resouceId, List<Director> list) {
+    public DirectionSpinnerAdapter(Context context, int resouceId, List<Director> list) {
         super(context, resouceId);
         this.items = list;
         this.context = context;
@@ -48,9 +48,9 @@ public class DirectionAdapter extends ArrayAdapter<Director> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View  v = inflater.inflate(R.layout.spinner_item, null, false);
-        DirectionAdapter.ViewHolder viewHolder = new DirectionAdapter.ViewHolder(v);
+        DirectionSpinnerAdapter.ViewHolder viewHolder = new DirectionSpinnerAdapter.ViewHolder(v);
         viewHolder.mContentView1.setText(String.valueOf(items.get(position).getId()));
-        viewHolder.mContentView2.setText(items.get(position).toString());
+        viewHolder.mContentView2.setText(items.get(position).getFullName());
         return v;
     }
 
@@ -60,9 +60,9 @@ public class DirectionAdapter extends ArrayAdapter<Director> {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.spinner_item, null, false);
         }
-        DirectionAdapter.ViewHolder viewHolder = new DirectionAdapter.ViewHolder(convertView);
+        DirectionSpinnerAdapter.ViewHolder viewHolder = new DirectionSpinnerAdapter.ViewHolder(convertView);
         viewHolder.mContentView1.setText(String.valueOf(items.get(position).getId()));
-        viewHolder.mContentView2.setText(items.get(position).toString());
+        viewHolder.mContentView2.setText(items.get(position).getFullName());
         return convertView;
     }
 

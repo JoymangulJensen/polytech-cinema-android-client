@@ -105,4 +105,8 @@ public class Actor implements Parcelable {
         dest.writeString(this.firstName);
         dest.writeString(this.name);
     }
+
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getName();
+    }
 }

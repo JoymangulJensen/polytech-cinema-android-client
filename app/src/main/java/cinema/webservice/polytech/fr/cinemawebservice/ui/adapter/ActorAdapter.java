@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
-import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
-import cinema.webservice.polytech.fr.cinemawebservice.ui.CategoriesFragment;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Actor;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.ActorsFragment;
 
 import java.util.List;
 
@@ -16,28 +16,28 @@ import java.util.List;
  * Project: CinemaWebservice
  * Package: cinema.webservice.polytech.fr.cinemawebservice.ui.adapter
  * Date: 24-Dec-17
- * Time: 15:03
+ * Time: 14:09
  */
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>  {
-    private final List<Category> category;
-    private final CategoriesFragment.OnSelectCategory mListener;
+public class ActorAdapter extends RecyclerView.Adapter<ActorAdapter.ViewHolder> {
+    private final List<Actor> actors;
+    private final ActorsFragment.OnSelectActor mListener;
 
-    public CategoryAdapter(List<Category> category, CategoriesFragment.OnSelectCategory mListener) {
-        this.category = category;
+    public ActorAdapter(List<Actor> actors, ActorsFragment.OnSelectActor mListener) {
+        this.actors = actors;
         this.mListener = mListener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ActorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item, parent, false);
-        return new CategoryAdapter.ViewHolder(view);
+        return new ActorAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mIdView.setText(String.valueOf(category.get(position).getCode()));
-        holder.mContentView.setText(String.valueOf(category.get(position).getName()));
+    public void onBindViewHolder(final ActorAdapter.ViewHolder holder, int position) {
+        holder.mIdView.setText(String.valueOf(actors.get(position).getId()));
+        holder.mContentView.setText(String.valueOf(actors.get(position).getFullName()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onFragmentInteraction(holder.category);
+                    mListener.onFragmentInteraction(holder.actor);
                 }
             }
         });
@@ -53,14 +53,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return category.size();
+        return actors.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mIdView;
         final TextView mContentView;
-        Category category;
+        Actor actor;
 
         ViewHolder(View view) {
             super(view);
