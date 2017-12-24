@@ -65,7 +65,7 @@ public class FilmsFragment extends Fragment {
             call.enqueue(new Callback<List<Film>>() {
                 @Override
                 public void onResponse(Call<List<Film>> call, Response<List<Film>> response) {
-                    recyclerView.setAdapter(new FilmAdapter( response.body(), mListener));
+                    recyclerView.setAdapter(new FilmAdapter(response.body(), mListener));
                 }
 
                 @Override

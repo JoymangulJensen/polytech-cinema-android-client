@@ -10,17 +10,32 @@ import com.google.gson.annotations.SerializedName;
  * on 05-Nov-17.
  */
 public class Director implements Parcelable {
+    public static final Parcelable.Creator<Director> CREATOR = new Parcelable.Creator<Director>() {
+        @Override
+        public Director createFromParcel(Parcel source) {
+            return new Director(source);
+        }
+
+        @Override
+        public Director[] newArray(int size) {
+            return new Director[size];
+        }
+    };
     @SerializedName("id")
     @Expose
     private long id;
-
     @SerializedName("name")
     @Expose
     private String name;
-
     @SerializedName("firstName")
     @Expose
     private String firstName;
+
+    protected Director(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.firstName = in.readString();
+    }
 
     public long getId() {
         return id;
@@ -46,7 +61,6 @@ public class Director implements Parcelable {
         this.firstName = firstName;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -58,24 +72,6 @@ public class Director implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.firstName);
     }
-
-    protected Director(Parcel in) {
-        this.id = in.readLong();
-        this.name = in.readString();
-        this.firstName = in.readString();
-    }
-
-    public static final Parcelable.Creator<Director> CREATOR = new Parcelable.Creator<Director>() {
-        @Override
-        public Director createFromParcel(Parcel source) {
-            return new Director(source);
-        }
-
-        @Override
-        public Director[] newArray(int size) {
-            return new Director[size];
-        }
-    };
 
     @Override
     public String toString() {

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
-import cinema.webservice.polytech.fr.cinemawebservice.ui.FilmsFragment.OnListFragmentInteractionListener;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.FilmsFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 

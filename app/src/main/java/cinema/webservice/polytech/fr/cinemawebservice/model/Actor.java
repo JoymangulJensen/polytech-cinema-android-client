@@ -12,25 +12,45 @@ import java.util.Date;
  * on 05-Nov-17.
  */
 public class Actor implements Parcelable {
+    public static final Creator<Actor> CREATOR = new Creator<Actor>() {
+        @Override
+        public Actor createFromParcel(Parcel source) {
+            return new Actor(source);
+        }
+
+        @Override
+        public Actor[] newArray(int size) {
+            return new Actor[size];
+        }
+    };
     @SerializedName("id")
     @Expose
     private long id;
-
     @SerializedName("birthday")
     @Expose
     private Date birthday;
-
     @SerializedName("deathDate")
     @Expose
     private Date deathDate;
-
     @SerializedName("firstName")
     @Expose
     private String firstName;
-
     @SerializedName("name")
     @Expose
     private String name;
+
+    public Actor() {
+    }
+
+    protected Actor(Parcel in) {
+        this.id = in.readLong();
+        long tmpBirthday = in.readLong();
+        this.birthday = tmpBirthday == -1 ? null : new Date(tmpBirthday);
+        long tmpDeathDate = in.readLong();
+        this.deathDate = tmpDeathDate == -1 ? null : new Date(tmpDeathDate);
+        this.firstName = in.readString();
+        this.name = in.readString();
+    }
 
     public long getId() {
         return id;
@@ -72,7 +92,6 @@ public class Actor implements Parcelable {
         this.name = name;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -86,29 +105,4 @@ public class Actor implements Parcelable {
         dest.writeString(this.firstName);
         dest.writeString(this.name);
     }
-
-    public Actor() {
-    }
-
-    protected Actor(Parcel in) {
-        this.id = in.readLong();
-        long tmpBirthday = in.readLong();
-        this.birthday = tmpBirthday == -1 ? null : new Date(tmpBirthday);
-        long tmpDeathDate = in.readLong();
-        this.deathDate = tmpDeathDate == -1 ? null : new Date(tmpDeathDate);
-        this.firstName = in.readString();
-        this.name = in.readString();
-    }
-
-    public static final Creator<Actor> CREATOR = new Creator<Actor>() {
-        @Override
-        public Actor createFromParcel(Parcel source) {
-            return new Actor(source);
-        }
-
-        @Override
-        public Actor[] newArray(int size) {
-            return new Actor[size];
-        }
-    };
 }

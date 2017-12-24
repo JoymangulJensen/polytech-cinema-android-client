@@ -10,13 +10,31 @@ import com.google.gson.annotations.SerializedName;
  * on 05-Nov-17.
  */
 public class Category implements Parcelable {
+    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
+        @Override
+        public Category createFromParcel(Parcel source) {
+            return new Category(source);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
     @SerializedName("code")
     @Expose
     private String code;
-
     @SerializedName("name")
     @Expose
     private String name;
+
+    public Category() {
+    }
+
+    protected Category(Parcel in) {
+        this.code = in.readString();
+        this.name = in.readString();
+    }
 
     public String getCode() {
         return code;
@@ -34,7 +52,6 @@ public class Category implements Parcelable {
         this.name = name;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -45,24 +62,4 @@ public class Category implements Parcelable {
         dest.writeString(this.code);
         dest.writeString(this.name);
     }
-
-    public Category() {
-    }
-
-    protected Category(Parcel in) {
-        this.code = in.readString();
-        this.name = in.readString();
-    }
-
-    public static final Parcelable.Creator<Category> CREATOR = new Parcelable.Creator<Category>() {
-        @Override
-        public Category createFromParcel(Parcel source) {
-            return new Category(source);
-        }
-
-        @Override
-        public Category[] newArray(int size) {
-            return new Category[size];
-        }
-    };
 }

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
-import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Director;
 
 import java.util.ArrayList;

@@ -14,37 +14,56 @@ import java.util.Date;
  * on 05-Nov-17.
  */
 public class Film implements Parcelable {
+    public static final Creator<Film> CREATOR = new Creator<Film>() {
+        @Override
+        public Film createFromParcel(Parcel source) {
+            return new Film(source);
+        }
+
+        @Override
+        public Film[] newArray(int size) {
+            return new Film[size];
+        }
+    };
     @SerializedName("id")
     @Expose
     private long id;
-
     @SerializedName("budget")
     @Expose
     private long budget;
-
     @SerializedName("duration")
     @Expose
     private long duration;
-
     @SerializedName("grossing")
     @Expose
     private long grossing;
-
     @SerializedName("releaseDate")
     @Expose
     private Date releaseDate;
-
     @SerializedName("title")
     @Expose
     private String title;
-
     @SerializedName("director")
     @Expose
     private Director director;
-
     @SerializedName("category")
     @Expose
     private Category category;
+
+    public Film() {
+    }
+
+    protected Film(Parcel in) {
+        this.id = in.readLong();
+        this.budget = in.readLong();
+        this.duration = in.readLong();
+        this.grossing = in.readLong();
+        long tmpReleaseDate = in.readLong();
+        this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
+        this.title = in.readString();
+        this.director = in.readParcelable(Director.class.getClassLoader());
+        this.category = in.readParcelable(Category.class.getClassLoader());
+    }
 
     public long getId() {
         return id;
@@ -115,7 +134,6 @@ public class Film implements Parcelable {
         this.category = category;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -132,31 +150,4 @@ public class Film implements Parcelable {
         dest.writeParcelable(this.director, flags);
         dest.writeParcelable(this.category, flags);
     }
-
-    public Film() {
-    }
-
-    protected Film(Parcel in) {
-        this.id = in.readLong();
-        this.budget = in.readLong();
-        this.duration = in.readLong();
-        this.grossing = in.readLong();
-        long tmpReleaseDate = in.readLong();
-        this.releaseDate = tmpReleaseDate == -1 ? null : new Date(tmpReleaseDate);
-        this.title = in.readString();
-        this.director = in.readParcelable(Director.class.getClassLoader());
-        this.category = in.readParcelable(Category.class.getClassLoader());
-    }
-
-    public static final Creator<Film> CREATOR = new Creator<Film>() {
-        @Override
-        public Film createFromParcel(Parcel source) {
-            return new Film(source);
-        }
-
-        @Override
-        public Film[] newArray(int size) {
-            return new Film[size];
-        }
-    };
 }

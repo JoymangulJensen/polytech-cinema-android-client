@@ -1,21 +1,13 @@
 package cinema.webservice.polytech.fr.cinemawebservice.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
-import cinema.webservice.polytech.fr.cinemawebservice.controller.CategoryController;
-import cinema.webservice.polytech.fr.cinemawebservice.controller.FilmController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
-import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
-import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +44,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View  v = inflater.inflate(R.layout.spinner_item, null, false);
+        View v = inflater.inflate(R.layout.spinner_item, null, false);
         ViewHolder viewHolder = new ViewHolder(v);
         viewHolder.mContentView1.setText(items.get(position).getCode());
         viewHolder.mContentView2.setText(items.get(position).getName());
@@ -61,7 +53,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.spinner_item, null, false);
         }
