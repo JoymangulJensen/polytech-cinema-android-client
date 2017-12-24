@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cinema Webservice</string>
+    <string name="action_settings">Réglages</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="films">Films</string>
+    <string name="actors">Acteurs</string>
+    <string name="categories">Catégories</string>
+    <string name="characters">Personnages</string>
+    <string name="directors">Réalisateurs</string>
+    <string name="edit">Modifier</string>
+    <string name="budget">Budget</string>
+    <string name="grossing">Revenue</string>
+    <string name="releaseDate">Date de Sortie</string>
+    <string name="duration">Duration</string>
+    <string name="director">Réalisateur</string>
+    <string name="lastName">Nom</string>
+    <string name="firstName">Prénom</string>
+    <string name="category">Categorie</string>
+    <string name="title">Titre</string>
+</resources>
