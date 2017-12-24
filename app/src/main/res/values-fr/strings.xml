@@ -9,4 +9,14 @@
     <string name="categories">Catégories</string>
     <string name="characters">Personnages</string>
     <string name="directors">Réalisateurs</string>
+    <string name="edit">Modifier</string>
+    <string name="budget">Budget</string>
+    <string name="grossing">Revenue</string>
+    <string name="releaseDate">Date de Sortie</string>
+    <string name="duration">Duration</string>
+    <string name="director">Réalisateur</string>
+    <string name="lastName">Nom</string>
+    <string name="firstName">Prénom</string>
+    <string name="category">Categorie</string>
+    <string name="title">Titre</string>
 </resources>

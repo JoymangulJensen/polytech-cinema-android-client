@@ -1,5 +1,7 @@
 package cinema.webservice.polytech.fr.cinemawebservice.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,18 +9,33 @@ import com.google.gson.annotations.SerializedName;
  * Created by JOYMANGUL Jensen Selwyn
  * on 05-Nov-17.
  */
-public class Director {
+public class Director implements Parcelable {
+    public static final Parcelable.Creator<Director> CREATOR = new Parcelable.Creator<Director>() {
+        @Override
+        public Director createFromParcel(Parcel source) {
+            return new Director(source);
+        }
+
+        @Override
+        public Director[] newArray(int size) {
+            return new Director[size];
+        }
+    };
     @SerializedName("id")
     @Expose
     private long id;
-
     @SerializedName("name")
     @Expose
     private String name;
-
     @SerializedName("firstName")
     @Expose
     private String firstName;
+
+    protected Director(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.firstName = in.readString();
+    }
 
     public long getId() {
         return id;
@@ -42,5 +59,22 @@ public class Director {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.firstName);
+    }
+
+    @Override
+    public String toString() {
+        return name + ' ' + firstName;
     }
 }
