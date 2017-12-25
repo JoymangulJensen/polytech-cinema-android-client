@@ -2,10 +2,8 @@ package cinema.webservice.polytech.fr.cinemawebservice.ui;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -18,8 +16,8 @@ import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Director;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
-import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.CategoryAdapter;
-import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.DirectionAdapter;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.CategorySpinnerAdapter;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.DirectionSpinnerAdapter;
 import org.joda.time.DateTime;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -252,7 +250,7 @@ public class AddEditFilmFragment extends Fragment {
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                CategoryAdapter categoryAdapter = new CategoryAdapter(context, R.id.spinner_category, response.body());
+                CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(context, R.id.spinner_category, response.body());
                 categorySpinner.setAdapter(categoryAdapter);
                 int currentCategory = 0;
                 if(!isNewFilm) {
@@ -281,7 +279,7 @@ public class AddEditFilmFragment extends Fragment {
         callDirector.enqueue(new Callback<List<Director>>() {
             @Override
             public void onResponse(Call<List<Director>> call, Response<List<Director>> response) {
-                DirectionAdapter directionAdapter = new DirectionAdapter(context, R.id.spinner_director, response.body());
+                DirectionSpinnerAdapter directionAdapter = new DirectionSpinnerAdapter(context, R.id.spinner_director, response.body());
                 directorSpinner.setAdapter(directionAdapter);
                 int currentDirector = 0;
                 if(!isNewFilm) {

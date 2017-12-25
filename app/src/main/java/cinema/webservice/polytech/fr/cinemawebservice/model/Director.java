@@ -73,8 +73,7 @@ public class Director implements Parcelable {
         dest.writeString(this.firstName);
     }
 
-    @Override
-    public String toString() {
+    public String getFullName() {
         return name + ' ' + firstName;
     }
 }

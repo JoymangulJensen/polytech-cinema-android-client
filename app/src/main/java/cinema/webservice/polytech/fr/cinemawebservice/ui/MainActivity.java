@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +16,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Actor;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Category;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Director;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         FilmsFragment.OnListFragmentInteractionListener,
         FilmFragment.OnFragmentInteractionListener,
-        AddEditFilmFragment.OnReturnToFilmsListener {
+        AddEditFilmFragment.OnReturnToFilmsListener,
+        ActorsFragment.OnSelectActor,
+        CategoriesFragment.OnSelectCategory,
+        DirectorsFragment.OnSelectDirector{
 
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
@@ -97,13 +104,11 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             createFilmsFragment(false);
         } else if (id == R.id.nav_actor) {
-
-        } else if (id == R.id.nav_character) {
-
+            createListFragment(ActorsFragment.newInstance());
         } else if (id == R.id.nav_category) {
-
+            createListFragment(CategoriesFragment.newInstance());
         } else if (id == R.id.nav_director) {
-
+            createListFragment(DirectorsFragment.newInstance());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -113,7 +118,6 @@ public class MainActivity extends AppCompatActivity
 
     public void createFilmsFragment(Boolean isNew) {
         // Add the films list fragment
-        // Create an instance of FilmsFragment
         FilmsFragment fragment = FilmsFragment.newInstance();
 
         // Add the fragment to the 'fragment_container' FrameLayout
@@ -138,6 +142,23 @@ public class MainActivity extends AppCompatActivity
                 fab.hide();
                 // Commit the transaction
                 fragmentTransaction.commit();
+            }
+        });
+
+        fragmentTransaction.commit();
+    }
+
+    public void createListFragment(Fragment fragment) {
+        // Add the fragment to the 'fragment_container' FrameLayout
+        fragmentManager = getSupportFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fab.show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
             }
         });
 
@@ -173,5 +194,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void OnReturnToFilms() {
         createFilmsFragment(false);
+    }
+
+    @Override
+    public void onFragmentInteraction(Actor actor) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Category category) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Director director) {
+
     }
 }
