@@ -37,7 +37,7 @@ public class AddEditFilmFragment extends Fragment {
     Spinner directorSpinner;
     private Spinner categorySpinner;
     private Film film;
-    private boolean isNewFilm = true;
+    private static boolean isNewFilm = true;
     private View view;
     private FilmController filmController;
     private Context context;
@@ -48,8 +48,7 @@ public class AddEditFilmFragment extends Fragment {
     public AddEditFilmFragment() {
         // Required empty public constructor
         filmController = CinemaClient.getClient().create(FilmController.class);
-        if(film != null)
-            isNewFilm = false;
+
     }
 
     /**
@@ -61,6 +60,8 @@ public class AddEditFilmFragment extends Fragment {
      */
     public static AddEditFilmFragment newInstance(Film film) {
         AddEditFilmFragment fragment = new AddEditFilmFragment();
+        if(film != null)
+            isNewFilm = false;
         Bundle args = new Bundle();
         args.putParcelable(ARG_FILM_EDIT, film);
         fragment.setArguments(args);
@@ -216,7 +217,7 @@ public class AddEditFilmFragment extends Fragment {
         et = (EditText) view.findViewById(R.id.tv_duration);
         film.setDuration(Long.parseLong(et.getText().toString()));
         DatePicker dp = (DatePicker) view.findViewById(R.id.datePicker);
-        DateTime dt = new DateTime(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), 0, 0);
+        DateTime dt = new DateTime(dp.getYear(), dp.getMonth()+1, dp.getDayOfMonth(), 0, 0);
         film.setReleaseDate(dt.toDate());
         Category selectedCategory = (Category) categorySpinner.getSelectedItem();
         film.setCategory(selectedCategory);
