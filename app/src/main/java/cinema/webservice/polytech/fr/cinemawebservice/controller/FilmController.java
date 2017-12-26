@@ -14,6 +14,9 @@ public interface FilmController {
     @GET("film")
     Call<List<Film>> getFilms();
 
+    @GET("film/director/{id}")
+    Call<List<Film>> getFilmsByDirector(@Path("id") long id);
+
     @FormUrlEncoded
     @POST("film")
     Call<Film> addFilm(
@@ -38,4 +41,6 @@ public interface FilmController {
 
     @DELETE("film/{id}")
     Call<Void> deleteFilm(@Path("id") long id);
+
+
 }

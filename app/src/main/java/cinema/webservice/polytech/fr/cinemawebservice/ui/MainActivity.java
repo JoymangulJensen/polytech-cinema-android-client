@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity
         FilmFragment.OnFragmentInteractionListener,
         AddEditFilmFragment.OnReturnToFilmsListener,
         ActorsFragment.OnSelectActor,
+        ActorFragment.OnFragmentInteractionListener,
         CategoriesFragment.OnSelectCategory,
-        DirectorsFragment.OnSelectDirector{
+        DirectorsFragment.OnSelectDirector,
+        DirectorFragment .OnFragmentInteractionListener{
 
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
@@ -105,10 +107,13 @@ public class MainActivity extends AppCompatActivity
             createFilmsFragment(false);
         } else if (id == R.id.nav_actor) {
             createListFragment(ActorsFragment.newInstance());
+            fab.hide();
         } else if (id == R.id.nav_category) {
             createListFragment(CategoriesFragment.newInstance());
+            fab.hide();
         } else if (id == R.id.nav_director) {
             createListFragment(DirectorsFragment.newInstance());
+            fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -197,13 +202,37 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onListFragmentInteraction(Actor actor) {
+        ActorFragment actorFragment = ActorFragment.newInstance(actor);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, actorFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
+    }
+
+    @Override
     public void onFragmentInteraction(Actor actor) {
 
     }
 
     @Override
-    public void onFragmentInteraction(Category category) {
+    public void onListFragmentInteraction(Category category) {
 
+    }
+
+    @Override
+    public void onListFragmentInteraction(Director director) {
+        DirectorFragment directorFragment = DirectorFragment.newInstance(director);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, directorFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cinema.webservice.polytech.fr.cinemawebservice.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,16 +37,16 @@ public class ActorAdapter extends RecyclerView.Adapter<ActorAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(final ActorAdapter.ViewHolder holder, int position) {
+        holder.actor = actors.get(position);
         holder.mIdView.setText(String.valueOf(actors.get(position).getId()));
         holder.mContentView.setText(String.valueOf(actors.get(position).getFullName()));
-
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onFragmentInteraction(holder.actor);
+                    mListener.onListFragmentInteraction(holder.actor);
                 }
             }
         });
