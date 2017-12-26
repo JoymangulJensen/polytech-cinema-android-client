@@ -107,10 +107,13 @@ public class MainActivity extends AppCompatActivity
             createFilmsFragment(false);
         } else if (id == R.id.nav_actor) {
             createListFragment(ActorsFragment.newInstance());
+            fab.hide();
         } else if (id == R.id.nav_category) {
             createListFragment(CategoriesFragment.newInstance());
+            fab.hide();
         } else if (id == R.id.nav_director) {
             createListFragment(DirectorsFragment.newInstance());
+            fab.hide();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
