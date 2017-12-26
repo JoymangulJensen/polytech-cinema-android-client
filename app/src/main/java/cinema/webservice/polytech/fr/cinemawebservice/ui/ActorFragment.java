@@ -4,11 +4,25 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.*;
 import android.widget.TextView;
 import cinema.webservice.polytech.fr.cinemawebservice.R;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.CharacterController;
+import cinema.webservice.polytech.fr.cinemawebservice.controller.DirectorController;
 import cinema.webservice.polytech.fr.cinemawebservice.model.Actor;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Characters;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Director;
+import cinema.webservice.polytech.fr.cinemawebservice.retrofit.CinemaClient;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.CharacterAdapter;
+import cinema.webservice.polytech.fr.cinemawebservice.ui.adapter.DirectionSpinnerAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,6 +79,8 @@ public class ActorFragment extends Fragment {
             TextView tv5 = (TextView) view.findViewById(R.id.tv_death_date);
             if (actor.getDeathDate() != null)
                 tv5.setText(actor.getDeathDateStr());
+
+            getCharacters(view);
         }
 
 
@@ -113,6 +129,27 @@ public class ActorFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    private void getCharacters(final View view) {
+
+        final CharacterController characterController = CinemaClient.getClient().create(CharacterController.class);
+        Call<List<Characters>> callCharacters = characterController.getCharactersByActor(actor.getId());
+        callCharacters.enqueue(new Callback<List<Characters>>() {
+            @Override
+            public void onResponse(Call<List<Characters>> call, Response<List<Characters>> response) {
+                RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list_characters);
+                Context context = view.getContext();
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                CharacterAdapter characterAdapter = new CharacterAdapter(response.body());
+                recyclerView.setAdapter(characterAdapter);
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 
     /**

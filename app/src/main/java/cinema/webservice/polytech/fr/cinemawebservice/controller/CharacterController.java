@@ -1,8 +1,11 @@
 package cinema.webservice.polytech.fr.cinemawebservice.controller;
 
 import cinema.webservice.polytech.fr.cinemawebservice.model.Actor;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Characters;
+import cinema.webservice.polytech.fr.cinemawebservice.model.Film;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 import java.util.List;
 
@@ -15,5 +18,8 @@ import java.util.List;
  */
 public interface CharacterController {
     @GET("character")
-    Call<List<Actor>> getCharacters();
+    Call<List<Characters>> getCharacters();
+
+    @GET("character/actor/{id}")
+    Call<List<Characters>> getCharactersByActor(@Path("id") long id);
 }
