@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -68,12 +70,22 @@ public class Actor implements Parcelable {
         this.birthday = birthday;
     }
 
+    public String getBirthdayStr() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(this.getBirthday());
+    }
+
     public Date getDeathDate() {
         return deathDate;
     }
 
     public void setDeathDate(Date deathDate) {
         this.deathDate = deathDate;
+    }
+
+    public String getDeathDateStr() {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(this.getDeathDate());
     }
 
     public String getFirstName() {

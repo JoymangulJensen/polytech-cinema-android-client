@@ -96,6 +96,6 @@ public class DirectorsFragment extends Fragment {
     }
 
     public interface OnSelectDirector {
-        void onFragmentInteraction(Director director);
+        void onListFragmentInteraction(Director director);
     }
 }

@@ -45,7 +45,7 @@ public class DirectorAdapter extends RecyclerView.Adapter<DirectorAdapter.ViewHo
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onFragmentInteraction(holder.director);
+                    mListener.onListFragmentInteraction(holder.director);
                 }
             }
         });

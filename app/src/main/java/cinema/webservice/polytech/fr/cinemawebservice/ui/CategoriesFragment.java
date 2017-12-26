@@ -101,6 +101,6 @@ public class CategoriesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSelectCategory {
-        void onFragmentInteraction(Category category);
+        void onListFragmentInteraction(Category category);
     }
 }

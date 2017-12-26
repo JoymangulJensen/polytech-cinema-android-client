@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
         FilmFragment.OnFragmentInteractionListener,
         AddEditFilmFragment.OnReturnToFilmsListener,
         ActorsFragment.OnSelectActor,
+        ActorFragment.OnFragmentInteractionListener,
         CategoriesFragment.OnSelectCategory,
         DirectorsFragment.OnSelectDirector{
 
@@ -197,17 +198,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onListFragmentInteraction(Actor actor) {
+        ActorFragment actorFragment = ActorFragment.newInstance(actor);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, actorFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
+    }
+
+    @Override
     public void onFragmentInteraction(Actor actor) {
 
     }
 
     @Override
-    public void onFragmentInteraction(Category category) {
+    public void onListFragmentInteraction(Category category) {
 
     }
 
     @Override
-    public void onFragmentInteraction(Director director) {
+    public void onListFragmentInteraction(Director director) {
 
     }
 }

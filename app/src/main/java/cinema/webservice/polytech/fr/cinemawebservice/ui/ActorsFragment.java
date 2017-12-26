@@ -102,6 +102,6 @@ public class ActorsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnSelectActor {
-        void onFragmentInteraction(Actor actor);
+        void onListFragmentInteraction(Actor actor);
     }
 }
