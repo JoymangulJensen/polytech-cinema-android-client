@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity
         ActorsFragment.OnSelectActor,
         ActorFragment.OnFragmentInteractionListener,
         CategoriesFragment.OnSelectCategory,
-        DirectorsFragment.OnSelectDirector{
+        DirectorsFragment.OnSelectDirector,
+        DirectorFragment .OnFragmentInteractionListener{
 
     private FragmentManager fragmentManager;
     private FloatingActionButton fab;
@@ -221,6 +222,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(Director director) {
+        DirectorFragment directorFragment = DirectorFragment.newInstance(director);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, directorFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(Director director) {
 
     }
 }

@@ -36,6 +36,7 @@ public class DirectorAdapter extends RecyclerView.Adapter<DirectorAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.director = directors.get(position);
         holder.mIdView.setText(String.valueOf(directors.get(position).getId()));
         holder.mContentView.setText(String.valueOf(directors.get(position).getFullName()));
 
