@@ -117,7 +117,7 @@ public class ActorFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Do something that differs the Activity's menu here
         MenuItem item = menu.getItem(0);
-        item.setVisible(true);
+        item.setVisible(false);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class ActorFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             onEditButtonPressed(actor);
-            return true;
+            return false;
         }
         return false;
     }
