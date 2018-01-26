@@ -10,7 +10,7 @@
 
 
         <!-- To change the popup menu and app text color  -->
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorText</item>
 
         <!-- To change the background of options menu-->
         <item name="android:itemBackground">@color/colorAccent</item>
